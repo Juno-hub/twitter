@@ -6,7 +6,6 @@ const Tweet = ({ tweetObj, isOwner }) => {
   const [newTweet, setNewTweet] = useState(tweetObj.text);
   const onDeleteClick = async () => {
     const ok = window.confirm("Are you sure want to delete this tweet?");
-    console.log(ok);
     if (ok) {
       await dbService.doc(`tweets/${tweetObj.id}`).delete();
     }
@@ -29,17 +28,21 @@ const Tweet = ({ tweetObj, isOwner }) => {
     <div>
       {editing ? (
         <>
-          <form onSubmit={onSubmit}>
-            <input
-              type="text"
-              placeholder="Edit your tweet"
-              value={newTweet}
-              required
-              onChange={onChange}
-            />
-            <input type="submit" value="Update Tweet" />
-          </form>
-          <button onClick={toggleEditing}>Cancel</button>
+          {isOwner && (
+            <>
+              <form onSubmit={onSubmit}>
+                <input
+                  type="text"
+                  placeholder="Edit your tweet"
+                  value={newTweet}
+                  required
+                  onChange={onChange}
+                />
+                <input type="submit" value="Update Tweet" />
+              </form>
+              <button onClick={toggleEditing}>Cancel</button>
+            </>
+          )}
         </>
       ) : (
         <>
